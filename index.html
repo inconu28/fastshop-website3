@@ -1,0 +1,2417 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fast Shop - Boutique en Ligne</title>
+    <meta name="description" content="Fast Shop - Votre boutique en ligne pour les technologies et accessoires">
+    
+    <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --secondary: #1e293b;
+            --secondary-light: #334155;
+            --accent: #f59e0b;
+            --danger: #ef4444;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            --light: #f8fafc;
+            --dark: #0f172a;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--light);
+            transition: all 0.3s ease;
+        }
+
+        /* Animations */
+        @keyframes slideInUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+            }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-light) 100%);
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .cart-button, .favorites-button, .admin-toggle {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.2rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            text-decoration: none;
+        }
+
+        .cart-button:hover, .favorites-button:hover, .admin-toggle:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .badge {
+            background: var(--danger);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            animation: bounce 1s infinite;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            align-items: end;
+        }
+
+        .phone {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .delivery-badge {
+            font-size: 0.9rem;
+            background: var(--primary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            margin-top: 0.3rem;
+        }
+
+        /* GitHub Status Indicator */
+        .github-status {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            box-shadow: var(--shadow);
+            font-size: 0.9rem;
+            font-weight: 600;
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .github-status.connected {
+            background: var(--success);
+            color: white;
+        }
+
+        .github-status.syncing {
+            background: var(--warning);
+            color: white;
+        }
+
+        .github-status.error {
+            background: var(--danger);
+            color: white;
+        }
+
+        .github-status .spinner {
+            width: 12px;
+            height: 12px;
+            border: 2px solid transparent;
+            border-top: 2px solid currentColor;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        /* Search Bar */
+        .search-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            animation: slideInUp 0.6s ease;
+        }
+
+        .search-bar {
+            display: flex;
+            background: white;
+            border-radius: 25px;
+            box-shadow: var(--shadow);
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar:focus-within {
+            border-color: var(--primary);
+            transform: scale(1.02);
+        }
+
+        .search-input {
+            flex: 1;
+            border: none;
+            padding: 1rem;
+            font-size: 1.1rem;
+            border-radius: 20px;
+            outline: none;
+            background: transparent;
+            color: var(--text);
+        }
+
+        .search-button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 1rem 1.5rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .search-button:hover {
+            background: var(--primary-dark);
+        }
+
+        .filters {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-button {
+            background: white;
+            color: var(--text);
+            border: 2px solid var(--border);
+            padding: 0.7rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .filter-button.active,
+        .filter-button:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--dark) 0%, var(--secondary) 50%, var(--secondary-light) 100%);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 2;
+            animation: slideInUp 0.8s ease;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+        }
+
+        /* Products Section */
+        .products {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 3rem;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            position: relative;
+            cursor: pointer;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .product-image {
+            height: 250px;
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .product-actions {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .product-card:hover .product-actions {
+            opacity: 1;
+        }
+
+        .action-button {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            color: var(--text);
+        }
+
+        .action-button:hover {
+            background: white;
+            transform: scale(1.1);
+        }
+
+        .action-button.favorited {
+            background: var(--danger);
+            color: white;
+        }
+
+        .product-info {
+            padding: 2rem;
+            color: var(--text);
+        }
+
+        .product-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 1rem;
+        }
+
+        .product-features {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .product-features li {
+            padding: 0.3rem 0;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+        }
+
+        .product-features li::before {
+            content: '✓';
+            color: var(--primary);
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .price-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .price {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--danger);
+            text-shadow: 0 2px 4px rgba(220, 38, 38, 0.2);
+        }
+
+        .currency {
+            font-size: 1.5rem;
+            margin-left: 0.3rem;
+        }
+
+        .delivery-info {
+            background: linear-gradient(135deg, #dcfdf4, #a7f3d0);
+            color: #065f46;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* Stock Status */
+        .out-of-stock {
+            background: #fee2e2;
+            color: #b91c1c;
+            padding: 0.5rem;
+            border-radius: 8px;
+            display: inline-block;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .available-soon {
+            background: #fef3c7;
+            color: #92400e;
+            padding: 0.5rem;
+            border-radius: 8px;
+            display: inline-block;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .product-stock {
+            padding: 0.5rem;
+            background: #f0fdf4;
+            color: #065f46;
+            border-radius: 8px;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        /* Loading States */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 3rem;
+            color: var(--text-muted);
+        }
+
+        .loading .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--border);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 1rem;
+        }
+
+        /* Admin Styles */
+        .admin-interface {
+            background: var(--light);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .admin-header {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-light) 100%);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* GitHub Configuration Panel */
+        .github-config {
+            background: white;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--primary);
+        }
+
+        .config-form {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .config-group {
+            margin-bottom: 1rem;
+        }
+
+        .config-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .config-input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            background: var(--light);
+            color: var(--text);
+        }
+
+        .config-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+            outline: none;
+        }
+
+        .config-button {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .config-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .config-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Image Manager */
+        .image-manager {
+            background: white;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .image-upload-zone {
+            border: 2px dashed var(--border);
+            border-radius: 15px;
+            padding: 3rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            margin-bottom: 2rem;
+        }
+
+        .image-upload-zone:hover {
+            border-color: var(--primary);
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        .image-upload-zone.dragover {
+            border-color: var(--primary);
+            background: rgba(16, 185, 129, 0.1);
+            transform: scale(1.02);
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .github-images-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .github-image-item {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .github-image-item:hover {
+            transform: scale(1.05);
+        }
+
+        .github-image-item img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+        }
+
+        .github-image-actions {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            display: flex;
+            gap: 5px;
+        }
+
+        .image-action-btn {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .image-action-btn:hover {
+            background: white;
+            transform: scale(1.1);
+        }
+
+        .image-action-btn.copy {
+            color: var(--primary);
+        }
+
+        .image-action-btn.delete {
+            color: var(--danger);
+        }
+
+        /* Product Form with Image Integration */
+        .admin-panel {
+            background: white;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .admin-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .admin-form-group {
+            margin-bottom: 1rem;
+        }
+
+        .admin-form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .admin-form-control {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            background: var(--light);
+            color: var(--text);
+        }
+
+        .admin-form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+            outline: none;
+        }
+
+        .admin-button {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .admin-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .admin-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Image Selection Modal */
+        .image-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+        }
+
+        .image-modal.show {
+            display: flex;
+        }
+
+        .image-modal-content {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            max-width: 80vw;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .image-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .close-modal {
+            background: var(--danger);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        /* Notifications */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.error {
+            background: var(--danger);
+        }
+
+        .notification.warning {
+            background: var(--warning);
+        }
+
+        .notification.info {
+            background: var(--info);
+        }
+
+        /* Tabs */
+        .tab-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .tab-buttons {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+            background: var(--light);
+        }
+
+        .tab-button {
+            padding: 1rem 2rem;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+
+        .tab-button.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            background: white;
+        }
+
+        .tab-button:hover:not(.active) {
+            background: rgba(16, 185, 129, 0.05);
+            color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 2rem;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-muted);
+            grid-column: 1 / -1;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .admin-form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .config-form {
+                grid-template-columns: 1fr;
+            }
+
+            .github-images-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            }
+
+            .tab-buttons {
+                flex-direction: column;
+            }
+
+            .tab-button {
+                text-align: left;
+                border-bottom: 1px solid var(--border);
+                border-left: 3px solid transparent;
+            }
+
+            .tab-button.active {
+                border-bottom-color: var(--border);
+                border-left-color: var(--primary);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- GitHub Status Indicator -->
+    <div id="github-status" class="github-status">
+        <i class="fab fa-github"></i>
+        <span id="github-status-text">Déconnecté</span>
+    </div>
+
+    <!-- Interface normale de la boutique -->
+    <div id="shop-interface">
+        <!-- Header -->
+        <header>
+            <div class="header-container">
+                <div class="logo" onclick="showShopInterface()">Fast Shop</div>
+                
+                <div class="header-actions">
+                    <button class="favorites-button" onclick="toggleFavorites()">
+                        <i class="fas fa-heart"></i>
+                        <span id="favorites-count">0</span>
+                        <span class="badge" id="favorites-badge" style="display: none;">0</span>
+                    </button>
+                    
+                    <button class="cart-button" onclick="toggleCart()">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span id="cart-count">0</span>
+                        <span class="badge" id="cart-badge" style="display: none;">0</span>
+                    </button>
+
+                    <button class="admin-toggle" onclick="showAdminInterface()">
+                        <i class="fas fa-cog"></i>
+                        Admin
+                    </button>
+                </div>
+                
+                <div class="contact-info">
+                    <div class="phone">📞 91373979</div>
+                    <div class="delivery-badge">🚚 Livraison Disponible</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Search and Filters -->
+        <div class="search-container">
+            <div class="search-bar">
+                <input type="text" class="search-input" placeholder="Rechercher un produit..." id="search-input">
+                <button class="search-button" onclick="searchProducts()">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            
+            <div class="filters">
+                <button class="filter-button active" data-filter="all">Tous</button>
+                <button class="filter-button" data-filter="led">LED</button>
+                <button class="filter-button" data-filter="audio">Audio</button>
+                <button class="filter-button" data-filter="tools">Outils</button>
+                <button class="filter-button" data-filter="decoration">Décoration</button>
+                <button class="filter-button" data-filter="available">En stock</button>
+                <button class="filter-button" data-filter="price-low">Prix croissant</button>
+                <button class="filter-button" data-filter="price-high">Prix décroissant</button>
+            </div>
+        </div>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Bienvenue chez Fast Shop</h1>
+                <p>Votre boutique en ligne pour les dernières technologies et accessoires high-tech</p>
+                <a href="#products" class="cta-button">Découvrir nos produits</a>
+            </div>
+        </section>
+
+        <!-- Products Section -->
+        <section class="products" id="products">
+            <h2 class="section-title">Nos Produits</h2>
+            <div id="products-loading" class="loading">
+                <div class="spinner"></div>
+                <span>Chargement des produits depuis GitHub...</span>
+            </div>
+            <div class="products-grid">
+                <!-- Produits chargés depuis GitHub -->
+            </div>
+        </section>
+    </div>
+
+    <!-- Interface d'administration -->
+    <div id="admin-interface" class="admin-interface" style="display: none;">
+        <!-- Admin Header -->
+        <div class="admin-header">
+            <div class="logo">Fast Shop Admin</div>
+            <div class="contact-info">
+                <div class="phone">📞 91373979</div>
+            </div>
+        </div>
+
+        <div class="admin-container">
+            <!-- Configuration GitHub -->
+            <div id="github-config-panel" class="github-config">
+                <h3 class="admin-title">
+                    <i class="fab fa-github"></i>
+                    Configuration GitHub
+                </h3>
+                <div class="config-form">
+                    <div class="config-group">
+                        <label for="github-username">Nom d'utilisateur GitHub</label>
+                        <input type="text" id="github-username" class="config-input" placeholder="votre-username">
+                    </div>
+                    <div class="config-group">
+                        <label for="github-repo">Nom du dépôt</label>
+                        <input type="text" id="github-repo" class="config-input" placeholder="fastshop-data">
+                    </div>
+                    <div class="config-group" style="grid-column: span 2;">
+                        <label for="github-token">Token d'accès GitHub</label>
+                        <input type="password" id="github-token" class="config-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+                        <small style="color: var(--text-muted); margin-top: 0.5rem; display: block;">
+                            🔑 <a href="https://github.com/settings/tokens" target="_blank">Créer un token GitHub</a> avec permissions "repo"
+                        </small>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <button id="test-github-connection" class="config-button">
+                        <i class="fas fa-plug"></i>
+                        Tester la connexion
+                    </button>
+                    <button id="setup-github-repo" class="config-button" style="background: var(--info);">
+                        <i class="fas fa-rocket"></i>
+                        Configurer le dépôt
+                    </button>
+                    <button id="save-github-config" class="config-button" style="background: var(--success);">
+                        <i class="fas fa-save"></i>
+                        Sauvegarder
+                    </button>
+                </div>
+            </div>
+
+            <!-- Gestionnaire d'images GitHub -->
+            <div class="image-manager">
+                <h3 class="admin-title">
+                    <i class="fas fa-images"></i>
+                    Gestionnaire d'images GitHub
+                </h3>
+                
+                <div class="image-upload-zone" id="image-upload-zone">
+                    <div class="upload-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <h4>Glisser-déposer vos images ici</h4>
+                    <p>ou cliquez pour sélectionner des fichiers</p>
+                    <small>Formats supportés: JPG, PNG, WebP (max 5MB)</small>
+                    <input type="file" id="image-upload-input" multiple accept="image/*" style="display: none;">
+                </div>
+
+                <div id="github-images-container">
+                    <div class="loading" id="images-loading">
+                        <div class="spinner"></div>
+                        <span>Chargement des images depuis GitHub...</span>
+                    </div>
+                    <div class="github-images-grid" id="github-images-grid">
+                        <!-- Images GitHub chargées dynamiquement -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Onglets Admin -->
+            <div class="tab-container">
+                <div class="tab-buttons">
+                    <button class="tab-button active" onclick="openTab('products-tab')">Produits</button>
+                    <button class="tab-button" onclick="openTab('add-product-tab')">Ajouter un produit</button>
+                    <button class="tab-button" onclick="openTab('sync-tab')">Synchronisation</button>
+                </div>
+                
+                <!-- Onglet Liste des produits -->
+                <div id="products-tab" class="tab-content active">
+                    <div class="admin-panel">
+                        <h3 class="admin-title">
+                            <i class="fas fa-box"></i>
+                            Gestion des produits
+                        </h3>
+                        <div class="admin-product-list" id="existing-products">
+                            <!-- Produits chargés depuis GitHub -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Onglet Ajouter un produit -->
+                <div id="add-product-tab" class="tab-content">
+                    <div class="admin-panel">
+                        <h3 class="admin-title">
+                            <i class="fas fa-plus"></i>
+                            Ajouter un nouveau produit
+                        </h3>
+                        <form id="admin-product-form">
+                            <div class="admin-form-grid">
+                                <div class="admin-form-group">
+                                    <label for="admin-product-name">Nom du produit</label>
+                                    <input type="text" id="admin-product-name" class="admin-form-control" required>
+                                </div>
+                                
+                                <div class="admin-form-group">
+                                    <label for="admin-product-price">Prix (FCFA)</label>
+                                    <input type="number" id="admin-product-price" class="admin-form-control" required>
+                                </div>
+                                
+                                <div class="admin-form-group">
+                                    <label for="admin-product-stock">Stock initial</label>
+                                    <input type="number" id="admin-product-stock" class="admin-form-control" min="0" value="0">
+                                </div>
+                                
+                                <div class="admin-form-group">
+                                    <label for="admin-product-category">Catégorie</label>
+                                    <select id="admin-product-category" class="admin-form-control">
+                                        <option value="led">LED</option>
+                                        <option value="audio">Audio</option>
+                                        <option value="tools">Outils</option>
+                                        <option value="decoration">Décoration</option>
+                                        <option value="other">Autre</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="admin-form-group">
+                                    <label for="admin-product-available-in">Disponibilité (optionnel)</label>
+                                    <input type="text" id="admin-product-available-in" class="admin-form-control" placeholder="ex: 2 semaines">
+                                </div>
+                                
+                                <div class="admin-form-group" style="grid-column: span 2;">
+                                    <label for="admin-product-description">Description</label>
+                                    <textarea id="admin-product-description" class="admin-form-control" rows="3"></textarea>
+                                </div>
+                                
+                                <div class="admin-form-group" style="grid-column: span 2;">
+                                    <label for="admin-product-features">Caractéristiques (une par ligne)</label>
+                                    <textarea id="admin-product-features" class="admin-form-control" rows="5"></textarea>
+                                </div>
+                                
+                                <div class="admin-form-group" style="grid-column: span 2;">
+                                    <label>Images du produit</label>
+                                    <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.5rem;">
+                                        <button type="button" class="config-button" onclick="openImageModal('main')">
+                                            <i class="fas fa-image"></i>
+                                            Image principale
+                                        </button>
+                                        <button type="button" class="config-button" onclick="openImageModal('gallery')" style="background: var(--info);">
+                                            <i class="fas fa-images"></i>
+                                            Galerie d'images
+                                        </button>
+                                    </div>
+                                    <div id="selected-images-preview" style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem;">
+                                        <!-- Aperçu des images sélectionnées -->
+                                    </div>
+                                    <input type="hidden" id="admin-product-images" value="">
+                                </div>
+                            </div>
+                            
+                            <div class="admin-form-group">
+                                <button type="submit" class="admin-button" id="submit-product-btn">
+                                    <i class="fas fa-plus"></i>
+                                    <span>Ajouter le produit</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Onglet Synchronisation -->
+                <div id="sync-tab" class="tab-content">
+                    <div class="admin-panel">
+                        <h3 class="admin-title">
+                            <i class="fas fa-sync-alt"></i>
+                            Synchronisation GitHub
+                        </h3>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 2rem;">
+                            <div style="background: var(--light); padding: 1.5rem; border-radius: 12px; text-align: center;">
+                                <div style="font-size: 2rem; font-weight: 800; color: var(--primary); margin-bottom: 0.5rem;" id="total-products">0</div>
+                                <div style="font-size: 0.9rem; color: var(--text-muted);">Produits locaux</div>
+                            </div>
+                            <div style="background: var(--light); padding: 1.5rem; border-radius: 12px; text-align: center;">
+                                <div style="font-size: 2rem; font-weight: 800; color: var(--info); margin-bottom: 0.5rem;" id="github-products">0</div>
+                                <div style="font-size: 0.9rem; color: var(--text-muted);">Produits GitHub</div>
+                            </div>
+                            <div style="background: var(--light); padding: 1.5rem; border-radius: 12px; text-align: center;">
+                                <div style="font-size: 2rem; font-weight: 800; color: var(--warning); margin-bottom: 0.5rem;" id="github-images">0</div>
+                                <div style="font-size: 0.9rem; color: var(--text-muted);">Images GitHub</div>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                            <button class="config-button" onclick="syncToGitHub()">
+                                <i class="fas fa-upload"></i>
+                                Envoyer vers GitHub
+                            </button>
+                            <button class="config-button" onclick="syncFromGitHub()" style="background: var(--info);">
+                                <i class="fas fa-download"></i>
+                                Récupérer depuis GitHub
+                            </button>
+                            <button class="config-button" onclick="forceSync()" style="background: var(--warning);">
+                                <i class="fas fa-sync"></i>
+                                Synchronisation forcée
+                            </button>
+                        </div>
+
+                        <div id="sync-log" style="background: var(--dark); color: #00ff00; padding: 1rem; border-radius: 8px; margin-top: 2rem; font-family: 'Courier New', monospace; height: 200px; overflow-y: auto; display: none;">
+                            <!-- Log de synchronisation -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de sélection d'images -->
+    <div id="image-selection-modal" class="image-modal">
+        <div class="image-modal-content">
+            <div class="image-modal-header">
+                <h3>Sélectionner des images</h3>
+                <button class="close-modal" onclick="closeImageModal()">×</button>
+            </div>
+            <div class="github-images-grid" id="modal-images-grid">
+                <!-- Images GitHub pour sélection -->
+            </div>
+            <div style="margin-top: 2rem; text-align: center;">
+                <button class="config-button" onclick="confirmImageSelection()">
+                    <i class="fas fa-check"></i>
+                    Confirmer la sélection
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notifications Container -->
+    <div id="notifications-container"></div>
+
+    <script>
+        // Configuration GitHub
+        let githubConfig = {
+            username: '',
+            repo: '',
+            token: '',
+            branch: 'main'
+        };
+
+        // Variables globales
+        let currentProduct = null;
+        let editingProductId = null;
+        let products = [];
+        let cart = [];
+        let favorites = [];
+        let filteredProducts = [];
+        let githubImages = [];
+        let selectedImages = [];
+        let currentImageSelectionType = 'main'; // 'main' ou 'gallery'
+
+        // WhatsApp configuration
+        const whatsappNumber = "22891373979";
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+        });
+
+        async function initializeApp() {
+            loadGitHubConfig();
+            await loadLocalData();
+            setupEventListeners();
+            
+            if(window.location.href.includes('admin=1') || window.location.href.includes('admin')) {
+                showAdminInterface();
+            } else {
+                showShopInterface();
+                await loadProductsFromGitHub();
+            }
+            
+            updateGitHubStatus();
+        }
+
+        // Configuration GitHub
+        function loadGitHubConfig() {
+            const saved = localStorage.getItem('fastshop_github_config');
+            if (saved) {
+                githubConfig = {...githubConfig, ...JSON.parse(saved)};
+                document.getElementById('github-username').value = githubConfig.username;
+                document.getElementById('github-repo').value = githubConfig.repo;
+                document.getElementById('github-token').value = githubConfig.token;
+            }
+        }
+
+        function saveGitHubConfig() {
+            githubConfig.username = document.getElementById('github-username').value;
+            githubConfig.repo = document.getElementById('github-repo').value;
+            githubConfig.token = document.getElementById('github-token').value;
+            
+            localStorage.setItem('fastshop_github_config', JSON.stringify(githubConfig));
+            showNotification('Configuration GitHub sauvegardée', 'success');
+            updateGitHubStatus();
+        }
+
+        async function testGitHubConnection() {
+            if (!githubConfig.username || !githubConfig.repo || !githubConfig.token) {
+                showNotification('Veuillez remplir tous les champs de configuration', 'error');
+                return;
+            }
+
+            updateGitHubStatus('syncing', 'Test de connexion...');
+            
+            try {
+                const response = await fetch(`https://api.github.com/repos/${githubConfig.username}/${githubConfig.repo}`, {
+                    headers: {
+                        'Authorization': `token ${githubConfig.token}`
+                    }
+                });
+
+                if (response.ok) {
+                    updateGitHubStatus('connected', 'Connecté');
+                    showNotification('Connexion GitHub réussie !', 'success');
+                    await loadGitHubImages();
+                } else {
+                    throw new Error(`Erreur ${response.status}: ${response.statusText}`);
+                }
+            } catch (error) {
+                updateGitHubStatus('error', 'Erreur de connexion');
+                showNotification(`Erreur GitHub: ${error.message}`, 'error');
+            }
+        }
+
+        async function setupGitHubRepo() {
+            if (!githubConfig.username || !githubConfig.repo || !githubConfig.token) {
+                showNotification('Configuration GitHub incomplète', 'error');
+                return;
+            }
+
+            updateGitHubStatus('syncing', 'Configuration du dépôt...');
+            addToSyncLog('🚀 Démarrage de la configuration du dépôt GitHub...');
+
+            try {
+                // 1. Vérifier si le dépôt existe
+                let repoResponse = await fetch(`https://api.github.com/repos/${githubConfig.username}/${githubConfig.repo}`, {
+                    headers: { 'Authorization': `token ${githubConfig.token}` }
+                });
+
+                // 2. Créer le dépôt s'il n'existe pas
+                if (!repoResponse.ok) {
+                    addToSyncLog('📁 Création du dépôt...');
+                    repoResponse = await fetch('https://api.github.com/user/repos', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `token ${githubConfig.token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            name: githubConfig.repo,
+                            description: 'Fast Shop - Données et images',
+                            private: false
+                        })
+                    });
+                }
+
+                // 3. Créer la structure de base
+                addToSyncLog('📂 Création de la structure...');
+                
+                const initialData = {
+                    products: [],
+                    categories: ['led', 'audio', 'tools', 'decoration', 'other'],
+                    config: {
+                        version: '1.0.0',
+                        lastUpdate: new Date().toISOString()
+                    }
+                };
+
+                await saveFileToGitHub('data/products.json', JSON.stringify(initialData, null, 2), 'Initial setup');
+                await saveFileToGitHub('images/README.md', '# Images FastShop\n\nDossier pour les images des produits', 'Initial setup');
+                
+                addToSyncLog('✅ Configuration terminée avec succès !');
+                updateGitHubStatus('connected', 'Configuré');
+                showNotification('Dépôt GitHub configuré avec succès !', 'success');
+
+            } catch (error) {
+                addToSyncLog(`❌ Erreur: ${error.message}`);
+                updateGitHubStatus('error', 'Erreur de configuration');
+                showNotification(`Erreur lors de la configuration: ${error.message}`, 'error');
+            }
+        }
+
+        function updateGitHubStatus(status = 'disconnected', message = '') {
+            const statusElement = document.getElementById('github-status');
+            const statusText = document.getElementById('github-status-text');
+            
+            statusElement.className = `github-status ${status}`;
+            
+            const messages = {
+                'disconnected': 'Déconnecté',
+                'connected': message || 'Connecté',
+                'syncing': message || 'Synchronisation...',
+                'error': message || 'Erreur'
+            };
+            
+            statusText.innerHTML = status === 'syncing' ? 
+                `<span class="spinner"></span>${messages[status]}` : 
+                messages[status];
+        }
+
+        // Gestion des images GitHub
+        async function loadGitHubImages() {
+            if (!isGitHubConfigured()) return;
+
+            try {
+                const response = await fetch(`https://api.github.com/repos/${githubConfig.username}/${githubConfig.repo}/contents/images`, {
+                    headers: { 'Authorization': `token ${githubConfig.token}` }
+                });
+
+                if (response.ok) {
+                    const files = await response.json();
+                    githubImages = files.filter(file => 
+                        file.type === 'file' && 
+                        /\.(jpg|jpeg|png|gif|webp)$/i.test(file.name)
+                    );
+                    renderGitHubImages();
+                    updateStats();
+                }
+            } catch (error) {
+                console.error('Erreur lors du chargement des images:', error);
+            }
+        }
+
+        function renderGitHubImages() {
+            const grid = document.getElementById('github-images-grid');
+            const loading = document.getElementById('images-loading');
+            
+            if (loading) loading.style.display = 'none';
+            
+            if (githubImages.length === 0) {
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 2rem;">Aucune image trouvée. Uploadez vos premières images !</p>';
+                return;
+            }
+
+            grid.innerHTML = githubImages.map(image => `
+                <div class="github-image-item" data-url="${image.download_url}">
+                    <img src="${image.download_url}" alt="${image.name}" loading="lazy">
+                    <div class="github-image-actions">
+                        <button class="image-action-btn copy" onclick="copyImageUrl('${image.download_url}')" title="Copier le lien">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                        <button class="image-action-btn delete" onclick="deleteGitHubImage('${image.path}')" title="Supprimer">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Upload d'images
+        function setupEventListeners() {
+            const uploadZone = document.getElementById('image-upload-zone');
+            const uploadInput = document.getElementById('image-upload-input');
+            
+            // Drag & Drop
+            uploadZone.addEventListener('click', () => uploadInput.click());
+            uploadZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadZone.classList.add('dragover');
+            });
+            uploadZone.addEventListener('dragleave', () => {
+                uploadZone.classList.remove('dragover');
+            });
+            uploadZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadZone.classList.remove('dragover');
+                handleFileUpload(e.dataTransfer.files);
+            });
+            
+            uploadInput.addEventListener('change', (e) => {
+                handleFileUpload(e.target.files);
+            });
+
+            // Configuration GitHub
+            document.getElementById('test-github-connection').addEventListener('click', testGitHubConnection);
+            document.getElementById('setup-github-repo').addEventListener('click', setupGitHubRepo);
+            document.getElementById('save-github-config').addEventListener('click', saveGitHubConfig);
+
+            // Formulaire produit
+            document.getElementById('admin-product-form').addEventListener('submit', handleProductSubmit);
+
+            // Recherche
+            const searchInput = document.getElementById('search-input');
+            if (searchInput) {
+                searchInput.addEventListener('input', debounce(searchProducts, 300));
+            }
+            
+            // Filtres
+            document.querySelectorAll('.filter-button').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-button').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    filterProducts(btn.dataset.filter);
+                });
+            });
+        }
+
+        async function handleFileUpload(files) {
+            if (!isGitHubConfigured()) {
+                showNotification('Veuillez configurer GitHub avant d\'uploader des images', 'error');
+                return;
+            }
+
+            updateGitHubStatus('syncing', 'Upload en cours...');
+            addToSyncLog(`📤 Upload de ${files.length} image(s)...`);
+
+            for (const file of files) {
+                if (!file.type.startsWith('image/')) {
+                    showNotification(`${file.name} n'est pas une image`, 'warning');
+                    continue;
+                }
+
+                if (file.size > 5 * 1024 * 1024) {
+                    showNotification(`${file.name} est trop volumineux (max 5MB)`, 'warning');
+                    continue;
+                }
+
+                try {
+                    const base64 = await fileToBase64(file);
+                    const fileName = `product-${Date.now()}-${file.name}`;
+                    
+                    await saveFileToGitHub(`images/${fileName}`, base64, `Upload image: ${fileName}`, true);
+                    addToSyncLog(`✅ ${fileName} uploadé avec succès`);
+                    
+                } catch (error) {
+                    addToSyncLog(`❌ Erreur upload ${file.name}: ${error.message}`);
+                }
+            }
+
+            await loadGitHubImages();
+            updateGitHubStatus('connected', 'Upload terminé');
+            showNotification('Images uploadées avec succès !', 'success');
+        }
+
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result.split(',')[1]);
+                reader.onerror = reject;
+            });
+        }
+
+        async function saveFileToGitHub(path, content, message, isBinary = false) {
+            if (!isGitHubConfigured()) throw new Error('GitHub non configuré');
+
+            // Vérifier si le fichier existe déjà 
+            let sha = null;
+            try {
+                const existingFile = await fetch(`https://api.github.com/repos/${githubConfig.username}/${githubConfig.repo}/contents/${path}`, {
+                    headers: { 'Authorization': `token ${githubConfig.token}` }
+                });
+                if (existingFile.ok) {
+                    const data = await existingFile.json();
+                    sha = data.sha;
+                }
+            } catch (error) {
+                // Le fichier n'existe pas, c'est normal
+            }
+
+            const body = {
+                message: message,
+                content: isBinary ? content : btoa(unescape(encodeURIComponent(content))),
+                branch: githubConfig.branch
+            };
+
+            if (sha) body.sha = sha;
+
+            const response = await fetch(`https://api.github.com/repos/${githubConfig.username}/${githubConfig.repo}/contents/${path}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `token ${githubConfig.token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.message || 'Erreur lors de la sauvegarde');
+            }
+
+            return await response.json();
+        }
+
+        // Modal de sélection d'images
+        function openImageModal(type) {
+            currentImageSelectionType = type;
+            const modal = document.getElementById('image-selection-modal');
+            const modalGrid = document.getElementById('modal-images-grid');
+            
+            modalGrid.innerHTML = githubImages.map(image => `
+                <div class="github-image-item" data-url="${image.download_url}" onclick="selectImage('${image.download_url}')">
+                    <img src="${image.download_url}" alt="${image.name}" loading="lazy">
+                    <div class="github-image-actions">
+                        <div class="image-action-btn" style="background: var(--primary); color: white;">
+                            <i class="fas fa-check" style="display: none;"></i>
+                            <i class="fas fa-plus"></i>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            modal.classList.add('show');
+        }
+
+        function closeImageModal() {
+            document.getElementById('image-selection-modal').classList.remove('show');
+            selectedImages = [];
+            updateModalSelection();
+        }
+
+        function selectImage(url) {
+            if (currentImageSelectionType === 'main') {
+                selectedImages = [url]; // Une seule image pour l'image principale
+            } else {
+                // Toggle selection pour la galerie
+                const index = selectedImages.indexOf(url);
+                if (index > -1) {
+                    selectedImages.splice(index, 1);
+                } else {
+                    selectedImages.push(url);
+                }
+            }
+            updateModalSelection();
+        }
+
+        function updateModalSelection() {
+            const items = document.querySelectorAll('#modal-images-grid .github-image-item');
+            items.forEach(item => {
+                const url = item.dataset.url;
+                const icon = item.querySelector('.fa-check');
+                const plusIcon = item.querySelector('.fa-plus');
+                
+                if (selectedImages.includes(url)) {
+                    item.style.borderColor = 'var(--primary)';
+                    item.style.boxShadow = '0 0 0 3px rgba(16, 185, 129, 0.3)';
+                    if (icon) {
+                        icon.style.display = 'block';
+                        plusIcon.style.display = 'none';
+                    }
+                } else {
+                    item.style.borderColor = 'transparent';
+                    item.style.boxShadow = 'none';
+                    if (icon) {
+                        icon.style.display = 'none';
+                        plusIcon.style.display = 'block';
+                    }
+                }
+            });
+        }
+
+        function confirmImageSelection() {
+            if (selectedImages.length === 0) {
+                showNotification('Veuillez sélectionner au moins une image', 'warning');
+                return;
+            }
+
+            const currentImages = document.getElementById('admin-product-images').value;
+            const existingImages = currentImages ? JSON.parse(currentImages) : [];
+            
+            if (currentImageSelectionType === 'main') {
+                // Remplacer l'image principale
+                existingImages[0] = selectedImages[0];
+            } else {
+                // Ajouter à la galerie (en évitant les doublons)
+                selectedImages.forEach(url => {
+                    if (!existingImages.includes(url)) {
+                        existingImages.push(url);
+                    }
+                });
+            }
+
+            document.getElementById('admin-product-images').value = JSON.stringify(existingImages);
+            updateImagePreview();
+            closeImageModal();
+            showNotification(`${selectedImages.length} image(s) ajoutée(s)`, 'success');
+        }
+
+        function updateImagePreview() {
+            const preview = document.getElementById('selected-images-preview');
+            const imagesValue = document.getElementById('admin-product-images').value;
+            
+            if (!imagesValue) {
+                preview.innerHTML = '';
+                return;
+            }
+
+            const images = JSON.parse(imagesValue);
+            preview.innerHTML = images.map((url, index) => `
+                <div style="position: relative; display: inline-block;">
+                    <img src="${url}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px; border: 2px solid var(--border);">
+                    <button onclick="removeSelectedImage(${index})" style="position: absolute; top: -5px; right: -5px; background: var(--danger); color: white; border: none; width: 20px; height: 20px; border-radius: 50%; cursor: pointer; font-size: 0.8rem;">×</button>
+                    ${index === 0 ? '<div style="position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); background: var(--primary); color: white; padding: 2px 6px; border-radius: 10px; font-size: 0.7rem;">Principal</div>' : ''}
+                </div>
+            `).join('');
+        }
+
+        function removeSelectedImage(index) {
+            const imagesValue = document.getElementById('admin-product-images').value;
+            const images = JSON.parse(imagesValue);
+            images.splice(index, 1);
+            document.getElementById('admin-product-images').value = JSON.stringify(images);
+            updateImagePreview();
+        }
+
+        // Gestion des produits avec GitHub
+        async function handleProductSubmit(e) {
+            e.preventDefault();
+            
+            if (!isGitHubConfigured()) {
+                showNotification('Veuillez configurer GitHub avant d\'ajouter des produits', 'error');
+                return;
+            }
+
+            const submitBtn = document.getElementById('submit-product-btn');
+            const originalText = submitBtn.innerHTML;
+            
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<div class="spinner"></div>Sauvegarde...';
+
+            try {
+                const productData = {
+                    name: document.getElementById('admin-product-name').value,
+                    price: parseInt(document.getElementById('admin-product-price').value) || 0,
+                    stock: parseInt(document.getElementById('admin-product-stock').value) || 0,
+                    category: document.getElementById('admin-product-category').value,
+                    availableIn: document.getElementById('admin-product-available-in').value || null,
+                    description: document.getElementById('admin-product-description').value || '',
+                    features: document.getElementById('admin-product-features').value ? 
+                        document.getElementById('admin-product-features').value.split('\n').filter(f => f.trim() !== '') : [],
+                    images: document.getElementById('admin-product-images').value ? 
+                        JSON.parse(document.getElementById('admin-product-images').value) : [],
+                    views: 0,
+                    dateCreated: new Date().toISOString()
+                };
+
+                if (editingProductId) {
+                    const productIndex = products.findIndex(p => p.id === editingProductId);
+                    if (productIndex !== -1) {
+                        products[productIndex] = {
+                            ...products[productIndex],
+                            ...productData,
+                            dateModified: new Date().toISOString()
+                        };
+                    }
+                    editingProductId = null;
+                    showNotification('Produit modifié avec succès!', 'success');
+                    addToSyncLog(`📝 Produit "${productData.name}" modifié`);
+                } else {
+                    const newProduct = {
+                        id: products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1,
+                        ...productData
+                    };
+                    products.push(newProduct);
+                    showNotification('Produit ajouté avec succès!', 'success');
+                    addToSyncLog(`➕ Nouveau produit "${productData.name}" ajouté`);
+                }
+
+                await saveProductsToGitHub();
+                renderAdminProductList();
+                e.target.reset();
+                updateImagePreview();
+                document.getElementById('admin-product-images').value = '';
+                
+                openTab('products-tab');
+
+            } catch (error) {
+                showNotification(`Erreur: ${error.message}`, 'error');
+                addToSyncLog(`❌ Erreur sauvegarde: ${error.message}`);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+            }
+        }
+
+        async function saveProductsToGitHub() {
+            if (!isGitHubConfigured()) return;
+
+            updateGitHubStatus('syncing', 'Sauvegarde...');
+
+            const data = {
+                products: products,
+                categories: ['led', 'audio', 'tools', 'decoration', 'other'],
+                config: {
+                    version: '1.0.0',
+                    lastUpdate: new Date().toISOString(),
+                    totalProducts: products.length
+                }
+            };
+
+            try {
+                await saveFileToGitHub('data/products.json', JSON.stringify(data, null, 2), 'Update products data');
+                updateGitHubStatus('connected', 'Sauvegardé');
+                addToSyncLog('✅ Données sauvegardées sur GitHub');
+            } catch (error) {
+                updateGitHubStatus('error', 'Erreur sauvegarde');
+                throw error;
+            }
+        }
+
+        async function loadProductsFromGitHub() {
+            if (!isGitHubConfigured()) {
+                await loadLocalData();
+                return;
+            }
+
+            const loading = document.getElementById('products-loading');
+            if (loading) loading.style.display = 'flex';
+
+            try {
+                updateGitHubStatus('syncing', 'Chargement...');
+                
+                const response = await fetch(`https://api.github.com/repos/${githubConfig.username}/${githubConfig.repo}/contents/data/products.json`, {
+                    headers: { 'Authorization': `token ${githubConfig.token}` }
+                });
+
+                if (response.ok) {
+                    const fileData = await response.json();
+                    const content = JSON.parse(atob(fileData.content));
+                    products = content.products || [];
+                    
+                    updateGitHubStatus('connected', 'Synchronisé');
+                    addToSyncLog(`📥 ${products.length} produits chargés depuis GitHub`);
+                } else {
+                    throw new Error('Données non trouvées sur GitHub');
+                }
+            } catch (error) {
+                console.log('Chargement GitHub échoué, utilisation des données locales:', error.message);
+                await loadLocalData();
+                updateGitHubStatus('error', 'Erreur chargement');
+            } finally {
+                if (loading) loading.style.display = 'none';
+                renderProducts();
+                updateStats();
+            }
+        }
+
+        async function loadLocalData() {
+            try {
+                const localProducts = localStorage.getItem('fastshop_products');
+                const localCart = localStorage.getItem('fastshop_cart');
+                const localFavorites = localStorage.getItem('fastshop_favorites');
+                
+                if (localProducts) products = JSON.parse(localProducts);
+                if (localCart) cart = JSON.parse(localCart);
+                if (localFavorites) favorites = JSON.parse(localFavorites);
+            } catch (error) {
+                console.log('Erreur chargement données locales:', error);
+                products = [];
+                cart = [];
+                favorites = [];
+            }
+        }
+
+        // Synchronisation
+        async function syncToGitHub() {
+            if (!isGitHubConfigured()) {
+                showNotification('Configuration GitHub requise', 'error');
+                return;
+            }
+
+            try {
+                addToSyncLog('🔄 Démarrage synchronisation vers GitHub...');
+                await saveProductsToGitHub();
+                showNotification('Synchronisation vers GitHub terminée !', 'success');
+            } catch (error) {
+                showNotification(`Erreur synchronisation: ${error.message}`, 'error');
+            }
+        }
+
+        async function syncFromGitHub() {
+            if (!isGitHubConfigured()) {
+                showNotification('Configuration GitHub requise', 'error');
+                return;
+            }
+
+            try {
+                addToSyncLog('🔄 Récupération depuis GitHub...');
+                await loadProductsFromGitHub();
+                await loadGitHubImages();
+                renderProducts();
+                renderAdminProductList();
+                updateStats();
+                showNotification('Synchronisation depuis GitHub terminée !', 'success');
+            } catch (error) {
+                showNotification(`Erreur synchronisation: ${error.message}`, 'error');
+            }
+        }
+
+        async function forceSync() {
+            if (!confirm('Cela va écraser les données locales avec celles de GitHub. Continuer ?')) {
+                return;
+            }
+
+            try {
+                addToSyncLog('⚠️ Synchronisation forcée en cours...');
+                products = [];
+                await syncFromGitHub();
+                localStorage.setItem('fastshop_products', JSON.stringify(products));
+                showNotification('Synchronisation forcée terminée !', 'success');
+            } catch (error) {
+                showNotification(`Erreur synchronisation forcée: ${error.message}`, 'error');
+            }
+        }
+
+        // Utilitaires
+        function isGitHubConfigured() {
+            return githubConfig.username && githubConfig.repo && githubConfig.token;
+        }
+
+        function addToSyncLog(message) {
+            const log = document.getElementById('sync-log');
+            if (!log) return;
+            
+            log.style.display = 'block';
+            const timestamp = new Date().toLocaleTimeString();
+            log.innerHTML += `[${timestamp}] ${message}\n`;
+            log.scrollTop = log.scrollHeight;
+        }
+
+        function copyImageUrl(url) {
+            navigator.clipboard.writeText(url).then(() => {
+                showNotification('Lien copié !', 'success');
+            });
+        }
+
+        async function deleteGitHubImage(path) {
+            if (!confirm('Supprimer cette image de GitHub ?')) return;
+
+            try {
+                // Récupérer le SHA du fichier
+                const response = await fetch(`https://api.github.com/repos/${githubConfig.username}/${githubConfig.repo}/contents/${path}`, {
+                    headers: { 'Authorization': `token ${githubConfig.token}` }
+                });
+                
+                const fileData = await response.json();
+                
+                // Supprimer le fichier
+                await fetch(`https://api.github.com/repos/${githubConfig.username}/${githubConfig.repo}/contents/${path}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `token ${githubConfig.token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: `Delete image: ${path}`,
+                        sha: fileData.sha
+                    })
+                });
+
+                showNotification('Image supprimée !', 'success');
+                await loadGitHubImages();
+            } catch (error) {
+                showNotification(`Erreur suppression: ${error.message}`, 'error');
+            }
+        }
+
+        // Interface utilisateur
+        function showShopInterface() {
+            document.getElementById('shop-interface').style.display = 'block';
+            document.getElementById('admin-interface').style.display = 'none';
+            filteredProducts = [];
+            renderProducts();
+        }
+
+        function showAdminInterface() {
+            document.getElementById('shop-interface').style.display = 'none';
+            document.getElementById('admin-interface').style.display = 'block';
+            setupAdminPanel();
+        }
+
+        function setupAdminPanel() {
+            renderAdminProductList();
+            loadGitHubImages();
+            updateStats();
+        }
+
+        function renderProducts() {
+            const grid = document.querySelector('.products-grid');
+            if (!grid) return;
+            
+            const productsToShow = filteredProducts.length > 0 ? filteredProducts : products;
+            grid.innerHTML = '';
+
+            if (productsToShow.length === 0) {
+                grid.innerHTML = '<div class="empty-state"><i class="fas fa-search"></i><p>Aucun produit trouvé</p></div>';
+                return;
+            }
+
+            productsToShow.forEach((product, index) => {
+                const productCard = createProductCard(product, index);
+                grid.appendChild(productCard);
+            });
+        }
+
+        function createProductCard(product, index) {
+            const stockStatus = getStockStatus(product);
+            const isInFavorites = favorites.some(fav => fav.id === product.id);
+            const mainImage = product.images && product.images[0] ? product.images[0] : '';
+            
+            const productCard = document.createElement('div');
+            productCard.className = 'product-card';
+            productCard.style.animationDelay = `${index * 0.1}s`;
+            
+            productCard.innerHTML = `
+                <div class="product-image" style="background-image:url('${mainImage}')">
+                    <div class="product-actions">
+                        <button class="action-button ${isInFavorites ? 'favorited' : ''}" onclick="toggleFavorite(${product.id})" title="Ajouter aux favoris">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                        <button class="action-button" onclick="addToCart(${JSON.stringify(product).replace(/"/g, '&quot;')})" title="Ajouter au panier">
+                            <i class="fas fa-shopping-cart"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">${product.name}</h3>
+                    ${stockStatus.html}
+                    <ul class="product-features">
+                        ${product.features ? product.features.slice(0, 3).map(f => `<li>${f}</li>`).join('') : ''}
+                    </ul>
+                    <div class="price-section">
+                        <div class="price">${product.price ? product.price.toLocaleString() : '0'}<span class="currency">F</span></div>
+                        ${product.stock > 0 ? '<div class="delivery-info">📦 Livraison</div>' : ''}
+                    </div>
+                </div>
+            `;
+            
+            productCard.addEventListener('click', (e) => {
+                if (!e.target.closest('.action-button')) {
+                    showProductDetail(product);
+                }
+            });
+            
+            return productCard;
+        }
+
+        function getStockStatus(product) {
+            if (product.stock > 0) {
+                return {
+                    html: `<div class="product-stock">Stock disponible : ${product.stock}</div>`,
+                    available: true
+                };
+            } else if (product.availableIn) {
+                return {
+                    html: `<div class="available-soon">Disponible dans ${product.availableIn}</div>`,
+                    available: false
+                };
+            } else {
+                return {
+                    html: `<div class="out-of-stock">Rupture de stock</div>`,
+                    available: false
+                };
+            }
+        }
+
+        function renderAdminProductList() {
+            const container = document.getElementById('existing-products');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            if (products.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 2rem;">Aucun produit disponible. Ajoutez votre premier produit.</p>';
+                return;
+            }
+            
+            products.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.style.cssText = `
+                    background: white; 
+                    border-radius: 12px; 
+                    padding: 1.5rem; 
+                    box-shadow: var(--shadow); 
+                    border: 1px solid var(--border); 
+                    transition: all 0.3s ease; 
+                    margin-bottom: 1rem;
+                `;
+                
+                productCard.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <div style="font-size: 1.2rem; font-weight: 700; color: var(--text);">${product.name}</div>
+                        <div style="font-weight: 700; color: var(--primary);">${product.price.toLocaleString()} FCFA</div>
+                    </div>
+                    <div style="display: flex; gap: 1rem; margin-bottom: 1rem; font-size: 0.9rem; color: var(--text-muted);">
+                        <span>Stock: ${product.stock}</span>
+                        <span>Vues: ${product.views || 0}</span>
+                        <span>Catégorie: ${product.category}</span>
+                        <span>Images: ${product.images ? product.images.length : 0}</span>
+                        ${product.availableIn ? `<span>Disponible dans: ${product.availableIn}</span>` : ''}
+                    </div>
+                    ${product.images && product.images.length > 0 ? `
+                        <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                            ${product.images.slice(0, 3).map(img => `<img src="${img}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 6px;" alt="Preview">`).join('')}
+                            ${product.images.length > 3 ? `<div style="width: 40px; height: 40px; background: var(--border); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: var(--text-muted);">+${product.images.length - 3}</div>` : ''}
+                        </div>
+                    ` : ''}
+                    <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
+                        <button onclick="editProduct(${product.id})" class="admin-button" style="background: var(--border); color: var(--text); padding: 0.5rem 1rem;">
+                            <i class="fas fa-edit"></i>
+                            Modifier
+                        </button>
+                        <button onclick="deleteProduct(${product.id})" class="admin-button" style="background: var(--danger); padding: 0.5rem 1rem;">
+                            <i class="fas fa-trash"></i>
+                            Supprimer
+                        </button>
+                    </div>
+                `;
+                
+                container.appendChild(productCard);
+            });
+        }
+
+        function editProduct(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            
+            editingProductId = productId;
+            
+            // Remplir le formulaire
+            document.getElementById('admin-product-name').value = product.name;
+            document.getElementById('admin-product-price').value = product.price;
+            document.getElementById('admin-product-stock').value = product.stock;
+            document.getElementById('admin-product-category').value = product.category;
+            document.getElementById('admin-product-available-in').value = product.availableIn || '';
+            document.getElementById('admin-product-description').value = product.description || '';
+            document.getElementById('admin-product-features').value = product.features ? product.features.join('\n') : '';
+            document.getElementById('admin-product-images').value = product.images ? JSON.stringify(product.images) : '';
+            
+            updateImagePreview();
+            openTab('add-product-tab');
+            
+            // Changer le bouton
+            const submitBtn = document.getElementById('submit-product-btn');
+            submitBtn.innerHTML = '<i class="fas fa-save"></i><span>Modifier le produit</span>';
+            
+            showNotification('Produit chargé pour modification', 'success');
+        }
+
+        async function deleteProduct(productId) {
+            if (!confirm("Êtes-vous sûr de vouloir supprimer ce produit ? Cette action est irréversible.")) {
+                return;
+            }
+
+            const product = products.find(p => p.id === productId);
+            products = products.filter(p => p.id !== productId);
+            
+            favorites = favorites.filter(f => f.id !== productId);
+            cart = cart.filter(c => c.id !== productId);
+            
+            try {
+                await saveProductsToGitHub();
+                renderAdminProductList();
+                renderProducts();
+                updateStats();
+                showNotification(`"${product?.name}" supprimé avec succès`, 'success');
+                addToSyncLog(`🗑️ Produit "${product?.name}" supprimé`);
+            } catch (error) {
+                showNotification(`Erreur suppression: ${error.message}`, 'error');
+            }
+        }
+
+        function updateStats() {
+            const totalEl = document.getElementById('total-products');
+            const githubProductsEl = document.getElementById('github-products');
+            const githubImagesEl = document.getElementById('github-images');
+            
+            if (totalEl) totalEl.textContent = products.length;
+            if (githubProductsEl) githubProductsEl.textContent = products.length;
+            if (githubImagesEl) githubImagesEl.textContent = githubImages.length;
+        }
+
+        // Onglets
+        function openTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.style.display = 'none';
+                tab.classList.remove('active');
+            });
+            
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            const targetTab = document.getElementById(tabId);
+            if (targetTab) {
+                targetTab.style.display = 'block';
+                targetTab.classList.add('active');
+            }
+            
+            const activeButton = document.querySelector(`button[onclick="openTab('${tabId}')"]`);
+            if (activeButton) {
+                activeButton.classList.add('active');
+            }
+            
+            if (tabId !== 'add-product-tab' && editingProductId) {
+                const form = document.getElementById('admin-product-form');
+                if (form) form.reset();
+                updateImagePreview();
+                document.getElementById('admin-product-images').value = '';
+                editingProductId = null;
+                
+                const submitBtn = document.getElementById('submit-product-btn');
+                submitBtn.innerHTML = '<i class="fas fa-plus"></i><span>Ajouter le produit</span>';
+            }
+        }
+
+        // Recherche et filtres (fonctions de base)
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        function searchProducts() {
+            const searchInput = document.getElementById('search-input');
+            if (!searchInput) return;
+            
+            const query = searchInput.value.toLowerCase();
+            
+            if (query === '') {
+                filteredProducts = [...products];
+            } else {
+                filteredProducts = products.filter(product => 
+                    product.name.toLowerCase().includes(query) ||
+                    product.description.toLowerCase().includes(query) ||
+                    product.features.some(feature => feature.toLowerCase().includes(query))
+                );
+            }
+            
+            renderProducts();
+        }
+
+        function filterProducts(filter) {
+            switch (filter) {
+                case 'all':
+                    filteredProducts = [...products];
+                    break;
+                case 'available':
+                    filteredProducts = products.filter(p => p.stock > 0);
+                    break;
+                case 'price-low':
+                    filteredProducts = [...products].sort((a, b) => a.price - b.price);
+                    break;
+                case 'price-high':
+                    filteredProducts = [...products].sort((a, b) => b.price - a.price);
+                    break;
+                default:
+                    filteredProducts = products.filter(p => p.category === filter);
+            }
+            
+            renderProducts();
+        }
+
+        // Placeholder pour les autres fonctions (cart, favoris, etc.)
+        function toggleCart() { console.log('Toggle cart'); }
+        function toggleFavorites() { console.log('Toggle favorites'); }
+        function addToCart(product) { console.log('Add to cart:', product); }
+        function toggleFavorite(id) { console.log('Toggle favorite:', id); }
+        function showProductDetail(product) { console.log('Show detail:', product); }
+
+        // Notifications
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'times' : type === 'warning' ? 'exclamation-triangle' : 'info'}"></i>
+                <span>${message}</span>
+            `;
+            
+            let container = document.getElementById('notifications-container');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'notifications-container';
+                container.style.position = 'fixed';
+                container.style.top = '100px';
+                container.style.right = '20px';
+                container.style.zIndex = '3000';
+                document.body.appendChild(container);
+            }
+            
+            container.appendChild(notification);
+            
+            setTimeout(() => notification.classList.add('show'), 100);
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
